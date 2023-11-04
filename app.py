@@ -11,8 +11,36 @@ import json
 import ftplib
 
 SPOTFILE = './static/spot.json'
+BUYEDFILE = './buyed.json'
 app = Flask(__name__)
 spots = {}
+buyed = [
+  {
+    'date': '2023/10/05',
+    'hash': 'aaaaa',
+    'id': '00000',
+  }, 
+  {
+    'date': '2023/10/15',
+    'hash': 'bbbbb',
+    'id': '00001',
+  }, 
+  {
+    'date': '2023/11/23',
+    'hash': 'ccccc',
+    'id': '00000',
+  }, 
+  {
+    'date': '2023/10/28',
+    'hash': 'ddddd',
+    'id': '00001',
+  }, 
+  {
+    'date': '2023/11/03',
+    'hash': 'eeeee',
+    'id': '00000',
+  }, 
+]
 
 # 地図のページ
 @app.route('/')
@@ -41,7 +69,9 @@ def spot(id):
 def cards():
   print("** /cards " + request.method)
   title = '御朱印OTAKU'
-  resp = make_response(render_template("cards.html", title=title))
+  with open(BUYEDFILE, "r", encoding="utf-8") as f:
+    buyed = json.load(f)
+  resp = make_response(render_template("cards.html", title=title, buyed=buyed))
   return resp
 
 # ログインページ
@@ -56,6 +86,18 @@ def login():
 @app.route('/prt/<id>', methods=["PUT"] ) 
 def prt(id):
   print("** /prt/" + id + " " + request.method)
+  # 購入データの更新
+  with open(BUYEDFILE, "r", encoding="utf-8") as f:
+    buyed = json.load(f)
+  now = datetime.datetime.now()
+  dt = {
+    "date": now.strftime('%Y/%m/%d'),
+    "hash": "xxxxx",
+    "id": id
+  }
+  buyed.append(dt)
+  with open(BUYEDFILE, "w", encoding="utf-8") as f:
+    json.dump(buyed, f, indent=2)
   '''
   ここに印刷の処理入れてください
   idは、５桁の文字型の数字にします（例、12345）。
@@ -67,4 +109,4 @@ def prt(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+  app.run(debug=True)

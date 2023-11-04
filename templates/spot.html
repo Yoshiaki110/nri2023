@@ -52,7 +52,7 @@
       function put() {
         const data = { username: "example" };
         //fetch("http://localhost:5000/prt/01234", {
-        fetch("/prt/01234", {
+        fetch("/prt/{{id}}", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

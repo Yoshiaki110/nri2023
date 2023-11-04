@@ -6,3 +6,5 @@
 スポットの概要
 スポットの写真（ファイル名は、スポットID.jpg、縦横比2:3）
 
+https://canon.jp/support/software/os/select?pr=2100&os=7
+
