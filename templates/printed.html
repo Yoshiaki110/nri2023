@@ -26,48 +26,22 @@
       </div>
     </nav>
     
-
     <div class="card card-body">
-      <h3>{{name}}</h3>
-      {{memo}}
+      <h3>印刷処理中</h3>
       <p />
       <div id="wrapper"></div>
       <div class="row">
         <div class="col-12">
-          <img src="/static/img/{{id}}.jpg" class="img-fluid" width="100%" />
-        </div>
-        <div class="col-12"><br /></div>
-        <div class="col-6">
-          <button onclick="history.back()" class="btn btn-secondary btn-lg btn-block">戻る</button>
-        </div>
-        <div class="col-6">
-          <button onclick="put()" class="btn btn-info btn-lg btn-block">プリント</button>
+          しばらくおまちください
         </div>
       </div>
-    </div>
+      <div class="col-12"><p /></div>
+      <div class="col-12">
+        <button onclick="history.back()" class="btn btn-secondary btn-lg btn-block">戻る</button>
+      </div>
+  </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script>
-      function put() {
-        const data = { username: "example" };
-        //fetch("http://localhost:5000/prt/01234", {
-        fetch("/prt/{{id}}", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
-            window.location.href = '/printed';
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-    </script>
   </body>
 </html>

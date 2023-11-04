@@ -10,6 +10,10 @@ import datetime
 import json
 import ftplib
 
+
+import make_qrcode
+import connect_qr
+
 SPOTFILE = './static/spot.json'
 BUYEDFILE = './buyed.json'
 app = Flask(__name__)
@@ -24,7 +28,7 @@ def index():
   return resp
 
 # 各スポットのページ
-@app.route('/spot/<id>') 
+@app.route('/spot/<id>')
 def spot(id):
   global spots
   print("** /spot/" + id + " " + request.method)
@@ -55,18 +59,25 @@ def login():
   resp = make_response(render_template("login.html", title=title))
   return resp
 
+# 印刷中ページ
+@app.route('/printed')
+def logprintedin():
+  print("** /printed " + request.method)
+  title = '御朱印OTAKU'
+  resp = make_response(render_template("printed.html", title=title))
+  return resp
+
 # ダウンロード
 @app.route('/download', methods=["GET", "DELETE"])
 def download():
   print("** /download " + request.method)
+  path = './static/res/res.jpg'
   if request.method == "GET":
-    path = './static/img/00007.jpg-'
     if os.path.exists(path):
       return send_file(path, as_attachment=True)
     else:
       return jsonify({'message': 'hello internal'}), 404
   if request.method == "DELETE":
-    path = './tmp.jpg'
     os.remove(path)
     return '200'
 
@@ -93,6 +104,9 @@ def prt(id):
   画像ファイルは、id.jpg（例、12345.jpg）
   QRコードは、http://localhost:5000/spot/id に飛ぶようにしてください
   '''
+  qr_img = make_qrcode.make_qrcode(id)
+  connect_qr.connect_qr(qr_img, id)
+
   return '200'
 
 
