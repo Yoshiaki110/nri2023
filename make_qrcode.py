@@ -1,9 +1,11 @@
 import qrcode
 from PIL import Image
 
-def make_qrcode(id):
-    url = 'http://localhost:5000/spot/' + id
-    img_name = 'static/img/'+'qr_' + id + '.jpg'
+#def make_qrcode(id):
+#    url = 'http://localhost:5000/spot/' + id
+#    img_name = 'static/img/'+'qr_' + id + '.jpg'
+def make_qrcode(url):
+    img_name = 'static/res/qr.jpg'
 
     img = qrcode.make(url)
     img.save(img_name)

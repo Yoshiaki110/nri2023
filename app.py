@@ -7,6 +7,7 @@ import uuid
 import socket
 from io import BytesIO
 import datetime
+import time
 import json
 import ftplib
 
@@ -67,13 +68,14 @@ def logprintedin():
   resp = make_response(render_template("printed.html", title=title))
   return resp
 
-# ダウンロード
+# ダウンロード及びダウンロードファイル削除
 @app.route('/download', methods=["GET", "DELETE"])
 def download():
   print("** /download " + request.method)
   path = './static/res/res.jpg'
   if request.method == "GET":
     if os.path.exists(path):
+      time.sleep(1)               # 作成途中かも知れないので
       return send_file(path, as_attachment=True)
     else:
       return jsonify({'message': 'hello internal'}), 404
@@ -85,6 +87,7 @@ def download():
 @app.route('/prt/<id>', methods=["PUT"] ) 
 def prt(id):
   print("** /prt/" + id + " " + request.method)
+  url = request.json["url"]
   # 購入データの更新
   with open(BUYEDFILE, "r", encoding="utf-8") as f:
     buyed = json.load(f)
@@ -104,7 +107,8 @@ def prt(id):
   画像ファイルは、id.jpg（例、12345.jpg）
   QRコードは、http://localhost:5000/spot/id に飛ぶようにしてください
   '''
-  qr_img = make_qrcode.make_qrcode(id)
+  #qr_img = make_qrcode.make_qrcode(id)
+  qr_img = make_qrcode.make_qrcode(url)
   connect_qr.connect_qr(qr_img, id)
 
   return '200'

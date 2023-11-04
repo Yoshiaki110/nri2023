@@ -31,6 +31,7 @@ def connect_qr(qr, id):
     large_img[y_offset:y_offset+small_img.shape[0], x_offset:x_offset+small_img.shape[1]] = small_img
     #res_name = 'static/res/' + 'res' + id + '.jpg'
     res_name = 'static/res/res.jpg'
+    large_img = cv2.cvtColor(large_img, cv2.COLOR_RGB2BGR)
     cv2.imwrite(res_name,large_img)
 
     return
