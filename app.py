@@ -14,33 +14,6 @@ SPOTFILE = './static/spot.json'
 BUYEDFILE = './buyed.json'
 app = Flask(__name__)
 spots = {}
-buyed = [
-  {
-    'date': '2023/10/05',
-    'hash': 'aaaaa',
-    'id': '00000',
-  }, 
-  {
-    'date': '2023/10/15',
-    'hash': 'bbbbb',
-    'id': '00001',
-  }, 
-  {
-    'date': '2023/11/23',
-    'hash': 'ccccc',
-    'id': '00000',
-  }, 
-  {
-    'date': '2023/10/28',
-    'hash': 'ddddd',
-    'id': '00001',
-  }, 
-  {
-    'date': '2023/11/03',
-    'hash': 'eeeee',
-    'id': '00000',
-  }, 
-]
 
 # 地図のページ
 @app.route('/')
@@ -81,6 +54,21 @@ def login():
   title = '御朱印OTAKU'
   resp = make_response(render_template("login.html", title=title))
   return resp
+
+# ダウンロード
+@app.route('/download', methods=["GET", "DELETE"])
+def download():
+  print("** /download " + request.method)
+  if request.method == "GET":
+    path = './static/img/00007.jpg-'
+    if os.path.exists(path):
+      return send_file(path, as_attachment=True)
+    else:
+      return jsonify({'message': 'hello internal'}), 404
+  if request.method == "DELETE":
+    path = './tmp.jpg'
+    os.remove(path)
+    return '200'
 
 # カードを印刷するAPI
 @app.route('/prt/<id>', methods=["PUT"] ) 
