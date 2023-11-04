@@ -7,76 +7,84 @@
     <title>{{title}}</title>
   </head>
   <body>
+
+    <nav class="navbar navbar-dark bg-dark">
+      <a href="#" class="navbar-brand">{{title}}</a>
+      <div class="dropdown">
+        <button type="button" id="dropdownMenuButton"
+            class="btn btn-secondary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+          メニュー
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="z-index:9999">
+          <a class="dropdown-item" href="/cards">所有カード</a>
+          <a class="dropdown-item" href="/login">ログアウト</a>
+        </div>
+      </div>
+    </nav>
+  
     <div class="card card-body">
-      {{title}}
-
-
-<!-- ここから -->
-    <div class="gmap">
-    <center>
-    <h3>大田区の御朱印スポットの所在地を表示しています。<br />
-    クリックするとスポットの情報が確認できます。</h3>
-    </center>
-    &nbsp;
+      <div class="gmap">
+      <center>
+      <h3>大田区の御朱印スポットの所在地を表示しています。<br />
+      クリックするとスポットの情報が確認できます。</h3>
+      </center>
+      &nbsp;
     
-    <div class="gmap" id="js_gmap1" style="height:400px;">&nbsp;</div>
-    <script>
-          var currentInfoWindow = null;
-    
-          function drawmap(data) {
-            var map = new google.maps.Map(document.getElementById('js_gmap1'), {
-              center: {
-                lat: 35.57204763978873,
-                lng: 139.72082613676693
-              },
-              zoom: 12
-            });
-            for (var studio of data) {
-              createMarker(studio, map);
-            }
-            function createMarker(studio, map) {
-              var center = {
-                lat: studio['lat'],
-                lng: studio['lng']
-              };
-              var marker = new google.maps.Marker({
-                position: center,
-                map: map
-              });
-              var infoWindow = new google.maps.InfoWindow({
-                content: '<a href="/spot/' + studio['id'] + '">' + studio['name'] + '</a>',
-                //maxWidth: 200
-              });
-              marker.addListener('click', function() {
-                if (currentInfoWindow) {
-                  currentInfoWindow.close();
-                }
-                infoWindow.open(map, marker);
-                currentInfoWindow = infoWindow;
-              });
-            }
-          }
-    
-          function initMap() {
-            fetch('/static/spot.json')
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              console.log(data);
-              drawmap(data);
-            });
-          }
-    
-        </script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkKwAg0EFYgA4TREhvpQt5CB0WIShw-gQ&callback=initMap"></script><!-- ここまで --></div>
-    <!-- ここまで -->
-
-
-
-
-
-
+      <div class="gmap" id="js_gmap1" style="height:400px;">&nbsp;</div>
     </div>
+    <script>
+      var currentInfoWindow = null;
+
+      function drawmap(data) {
+        var map = new google.maps.Map(document.getElementById('js_gmap1'), {
+          center: {
+            lat: 35.57204763978873,
+            lng: 139.72082613676693
+          },
+          zoom: 12
+        });
+        for (var studio of data) {
+          createMarker(studio, map);
+        }
+        function createMarker(studio, map) {
+          var center = {
+            lat: studio['lat'],
+            lng: studio['lng']
+          };
+          var marker = new google.maps.Marker({
+            position: center,
+            map: map
+          });
+          var infoWindow = new google.maps.InfoWindow({
+            content: '<a href="/spot/' + studio['id'] + '">' + studio['name'] + '</a>',
+            //maxWidth: 200
+          });
+          marker.addListener('click', function() {
+            if (currentInfoWindow) {
+              currentInfoWindow.close();
+            }
+            infoWindow.open(map, marker);
+            currentInfoWindow = infoWindow;
+          });
+        }
+      }
+
+      function initMap() {
+        fetch('/static/spot.json')
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            drawmap(data);
+        });
+      }
+  
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkKwAg0EFYgA4TREhvpQt5CB0WIShw-gQ&callback=initMap"></script><!-- ここまで --></div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

@@ -36,6 +36,22 @@ def spot(id):
   resp = make_response(render_template("spot.html", title=title, id=id, name=name, memo=memo))
   return resp
 
+# 所有カードのページ
+@app.route('/cards')
+def cards():
+  print("** /cards " + request.method)
+  title = '御朱印OTAKU'
+  resp = make_response(render_template("cards.html", title=title))
+  return resp
+
+# ログインページ
+@app.route('/login')
+def login():
+  print("** /login " + request.method)
+  title = '御朱印OTAKU'
+  resp = make_response(render_template("login.html", title=title))
+  return resp
+
 # カードを印刷するAPI
 @app.route('/prt/<id>', methods=["PUT"] ) 
 def prt(id):
